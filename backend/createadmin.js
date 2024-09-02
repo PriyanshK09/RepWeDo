@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const Admin = require('./models/Admin'); // adjust the path as needed
+const Admin = require('./models/User'); // adjust the path as needed
 
 mongoose.connect('mongodb://localhost:27017/repwedo', {
   useNewUrlParser: true,
@@ -13,7 +13,8 @@ const createAdmin = async () => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const admin = new Admin({
-      email: 'admin@repwedo.com',
+      username: 'priyansh',  // Set the desired username
+      email: 'priyansh@repwedo.com',
       password: hashedPassword,
       role: 'admin',
     });
@@ -23,6 +24,7 @@ const createAdmin = async () => {
     mongoose.connection.close();
   } catch (err) {
     console.error('Error creating admin user:', err);
+    mongoose.connection.close();
   }
 };
 

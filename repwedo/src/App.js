@@ -34,7 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/admin/dashboard" element={<PrivateRoute admin><AdminDashboard /></PrivateRoute>} />
+          <Route path="/admindashboard" element={<PrivateRoute admin><AdminDashboard /></PrivateRoute>} />
         </Routes>
         <Footer mode={mode} />
       </ThemeProvider>

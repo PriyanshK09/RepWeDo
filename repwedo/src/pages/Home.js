@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container, Typography, Box, Button, Grid, TextField, useTheme, keyframes } from '@mui/material';
 import { Link } from 'react-router-dom';
 import bgImage from './images/bg.png';
-import { CheckCircle, Speed, AttachMoney, Star } from '@mui/icons-material';
+import { CheckCircle, Speed, AttachMoney } from '@mui/icons-material';
 
 const float = keyframes`
   0% { transform: translateY(0px) rotate(-5deg); }
@@ -41,6 +41,7 @@ const Home = () => {
       setSubmissionStatus('Review submitted successfully!');
       setReviewText('');
       setReviewAuthor('');
+      // Re-fetch reviews to include the new review if accepted
       const response = await axios.get('http://localhost:5000/api/reviews');
       setReviews(response.data);
     } catch (error) {
@@ -135,7 +136,7 @@ const Home = () => {
                   height: 'auto',
                   animation: `${float} 6s ease-in-out infinite`,
                   position: 'relative',
-                  top: '-10%', // Moved up slightly
+                  top: '-10%',
                 }}
               />
               <Box
@@ -170,26 +171,22 @@ const Home = () => {
                 component="svg"
                 viewBox="0 0 24 24"
                 sx={{
-                  width: 70,
+                  width: 40,
                   position: 'absolute',
-                  bottom: '5%',
-                  left: '5%',
-                  fill: theme.palette.warning.main,
+                  bottom: '10%',
+                  right: '10%',
+                  fill: theme.palette.success.main,
                   animation: `${float} 6s ease-in-out infinite`,
                 }}
               >
-                <path d="M11,5V11H5V13H11V19H13V13H19V11H13V5H11Z" />
+                <path d="M10,14L16,10L15.57,9.57L10,15.14L8.43,13.57L8,14L10,16L16,10L14.43,8.43L10,12.86L8.43,11.29L10,14Z" />
               </Box>
             </Box>
           </Grid>
         </Grid>
       </Container>
 
-      {/* Service Features */}
       <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
-        <Typography variant="h3" color="text.primary" gutterBottom>
-          Our Services
-        </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Box
@@ -208,11 +205,11 @@ const Home = () => {
               }}
             >
               <CheckCircle sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
-              <Typography variant="h5" color="text.primary" gutterBottom>
-                Reliable Service
+              <Typography variant="h5" color="text.primary">
+                Quality Assurance
               </Typography>
               <Typography color="text.secondary">
-                Our technicians are highly trained and provide dependable service every time.
+                We ensure top-quality service with a focus on customer satisfaction.
               </Typography>
             </Box>
           </Grid>
@@ -232,12 +229,12 @@ const Home = () => {
                 },
               }}
             >
-              <Speed sx={{ fontSize: 60, color: theme.palette.warning.main, mb: 2 }} />
-              <Typography variant="h5" color="text.primary" gutterBottom>
-                Fast Response
+              <Speed sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+              <Typography variant="h5" color="text.primary">
+                Fast Service
               </Typography>
               <Typography color="text.secondary">
-                We understand the urgency and ensure quick response and resolution.
+                Get your electrical repairs done quickly and efficiently.
               </Typography>
             </Box>
           </Grid>
@@ -257,124 +254,95 @@ const Home = () => {
                 },
               }}
             >
-              <AttachMoney sx={{ fontSize: 60, color: theme.palette.success.main, mb: 2 }} />
-              <Typography variant="h5" color="text.primary" gutterBottom>
+              <AttachMoney sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+              <Typography variant="h5" color="text.primary">
                 Affordable Pricing
               </Typography>
               <Typography color="text.secondary">
-                Quality service at prices that won’t break the bank.
+                Competitive prices for all your electrical repair needs.
               </Typography>
             </Box>
           </Grid>
         </Grid>
       </Container>
 
-      {/* Testimonials Section */}
       <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
         <Typography variant="h3" color="text.primary" gutterBottom>
-          What Our Customers Say
+          Customer Reviews
         </Typography>
-        <Grid container spacing={4}>
-          {reviews.map((review, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Box
-                sx={{
-                  p: 4,
-                  border: `1px solid ${theme.palette.divider}`,
-                  borderRadius: '12px',
-                  backgroundColor: theme.palette.background.paper,
-                  boxShadow: 3,
-                  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'translateY(-10px)',
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <Star sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
-                <Typography variant="h6" color="text.primary" gutterBottom>
-                  "{review.text}"
-                </Typography>
-                <Typography color="text.secondary">
-                  - {review.author}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+        {reviews.length > 0 ? (
+          reviews.map((review) => (
+            <Box
+              key={review._id}
+              sx={{
+                p: 3,
+                mb: 2,
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: '8px',
+                backgroundColor: theme.palette.background.paper,
+                boxShadow: 2,
+              }}
+            >
+              <Typography variant="h6" color="text.primary" gutterBottom>
+                {review.author}
+              </Typography>
+              <Typography color="text.secondary">
+                {review.text}
+              </Typography>
+            </Box>
+          ))
+        ) : (
+          <Typography color="text.secondary">
+            No reviews available.
+          </Typography>
+        )}
       </Container>
 
-      {/* Review Submission Form */}
-      <Container maxWidth="md" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
         <Typography variant="h4" color="text.primary" gutterBottom>
-          Submit Your Review
+          Leave a Review
         </Typography>
-        <form onSubmit={handleSubmitReview}>
+        <Box
+          component="form"
+          onSubmit={handleSubmitReview}
+          sx={{ maxWidth: '600px', margin: 'auto' }}
+        >
           <TextField
+            fullWidth
             label="Your Name"
             variant="outlined"
-            fullWidth
-            required
             margin="normal"
             value={reviewAuthor}
             onChange={(e) => setReviewAuthor(e.target.value)}
+            required
           />
           <TextField
+            fullWidth
             label="Your Review"
             variant="outlined"
-            fullWidth
-            required
+            margin="normal"
             multiline
             rows={4}
-            margin="normal"
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
+            required
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            size="large"
             sx={{ mt: 2 }}
           >
             Submit Review
           </Button>
           {submissionStatus && (
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+            <Typography color={submissionStatus.includes('Failed') ? 'error' : 'success'} sx={{ mt: 2 }}>
               {submissionStatus}
             </Typography>
           )}
-        </form>
+        </Box>
       </Container>
-
-      {/* Decorative blobs with animation */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: -100,
-          left: -100,
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          backgroundColor: theme.palette.info.light,
-          opacity: 0.1,
-          zIndex: 0,
-          animation: `${float} 15s ease-in-out infinite`,
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: -50,
-          right: -50,
-          width: 200,
-          height: 200,
-          borderRadius: '50%',
-          backgroundColor: theme.palette.secondary.light,
-          opacity: 0.1,
-          zIndex: 0,
-          animation: `${float} 18s ease-in-out infinite`,
-        }}
-      />
     </Box>
   );
 };
