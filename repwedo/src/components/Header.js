@@ -135,7 +135,7 @@ const Header = ({ mode, toggleTheme }) => {
 
   const handleAccountClick = () => {
     if (user) {
-      navigate("/account");
+      navigate("/dashboard");
     } else {
       navigate("/login");
     }
