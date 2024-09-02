@@ -1,36 +1,28 @@
-const express = require('express');
-const Review = require('../models/Review');
-const jwt = require('jsonwebtoken');
-
+const express = require("express");
+const Review = require("../models/Review");
 const router = express.Router();
 
-const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];
-  if (!token) return res.sendStatus(401);
-  jwt.verify(token, 'secret', (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
-
-router.get('/', async (req, res) => {
+// Fetch accepted reviews
+router.get("/", async (req, res) => {
   try {
-    const reviews = await Review.find({ accepted: true });
+    const reviews = await Review.find({ status: 'accepted' });
     res.json(reviews);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: 'Error fetching reviews' });
   }
 });
 
-router.post('/', authenticateToken, async (req, res) => {
-  const { name, reviewText } = req.body;
+// Submit a review
+router.post("/", async (req, res) => {
   try {
-    const newReview = new Review({ name, reviewText });
-    await newReview.save();
+    const review = new Review({
+      text: req.body.text,
+      author: req.body.author,
+    });
+    await review.save();
     res.status(201).json({ message: 'Review submitted' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: 'Error submitting review' });
   }
 });
 

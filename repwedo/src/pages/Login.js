@@ -1,44 +1,70 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { TextField, Button, Typography, Container, Box, Link } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../context/UserContext";
+import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 
-const Login = ({ setAuth }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-      localStorage.setItem('token', response.data.token);
-      setAuth(true);
-      navigate('/');
-    } catch (error) {
-      console.error(error);
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        { username, password }
+      );
+      const { token, user } = response.data;
+      setUser({ token, role: user.role });
+      if (user.role === "admin") {
+        navigate("/admindashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError("Invalid username or password");
     }
   };
 
   return (
-    <Container>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}>
-        <Typography variant="h5">Login</Typography>
+    <Box sx={{ maxWidth: 400, mx: "auto", mt: 8, p: 4, boxShadow: 3 }}>
+      <Typography variant="h4" sx={{ mb: 4, textAlign: "center" }}>
+        Login
+      </Typography>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      <form onSubmit={handleLogin}>
         <TextField
           label="Username"
+          type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          sx={{ mt: 2, mb: 2 }}
+          fullWidth
+          required
+          sx={{ mb: 2 }}
         />
         <TextField
           label="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          sx={{ mb: 2 }}
+          fullWidth
+          required
+          sx={{ mb: 4 }}
         />
-        <Button variant="contained" onClick={handleLogin}>Login</Button>
-      </Box>
-    </Container>
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Login
+        </Button>
+      </form>
+    </Box>
   );
 };
 
