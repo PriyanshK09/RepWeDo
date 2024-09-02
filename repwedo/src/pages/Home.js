@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Typography, Box, Button, Grid, TextField, useTheme, keyframes } from '@mui/material';
-import { Link } from 'react-router-dom';
-import bgImage from './images/bg.png';
-import { CheckCircle, Speed, AttachMoney } from '@mui/icons-material';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  Grid,
+  TextField,
+  useTheme,
+  keyframes,
+} from "@mui/material";
+import { Link } from "react-router-dom";
+import bgImage from "./images/bg.png";
+import { CheckCircle, Speed, AttachMoney } from "@mui/icons-material";
 
 const float = keyframes`
   0% { transform: translateY(0px) rotate(-5deg); }
@@ -13,15 +22,15 @@ const float = keyframes`
 
 const Home = () => {
   const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState('');
-  const [reviewAuthor, setReviewAuthor] = useState('');
-  const [submissionStatus, setSubmissionStatus] = useState('');
+  const [reviewText, setReviewText] = useState("");
+  const [reviewAuthor, setReviewAuthor] = useState("");
+  const [submissionStatus, setSubmissionStatus] = useState("");
   const theme = useTheme();
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/reviews');
+        const response = await axios.get("http://localhost:5000/api/reviews");
         setReviews(response.data);
       } catch (error) {
         console.error(error);
@@ -34,35 +43,35 @@ const Home = () => {
   const handleSubmitReview = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/reviews', {
+      await axios.post("http://localhost:5000/api/reviews", {
         text: reviewText,
         author: reviewAuthor,
       });
-      setSubmissionStatus('Review submitted successfully!');
-      setReviewText('');
-      setReviewAuthor('');
+      setSubmissionStatus("Review submitted successfully!");
+      setReviewText("");
+      setReviewAuthor("");
       // Re-fetch reviews to include the new review if accepted
-      const response = await axios.get('http://localhost:5000/api/reviews');
+      const response = await axios.get("http://localhost:5000/api/reviews");
       setReviews(response.data);
     } catch (error) {
-      setSubmissionStatus('Failed to submit review.');
+      setSubmissionStatus("Failed to submit review.");
       console.error(error);
     }
   };
 
   return (
-    <Box 
-      sx={{ 
-        flexGrow: 1, 
+    <Box
+      sx={{
+        flexGrow: 1,
         backgroundColor: theme.palette.background.default,
-        position: 'relative',
-        overflow: 'hidden',
-        minHeight: '100vh',
+        position: "relative",
+        overflow: "hidden",
+        minHeight: "100vh",
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           left: 0,
           right: 0,
@@ -71,14 +80,19 @@ const Home = () => {
             linear-gradient(to right, ${theme.palette.divider} 1px, transparent 1px),
             linear-gradient(to bottom, ${theme.palette.divider} 1px, transparent 1px)
           `,
-          backgroundSize: '20px 20px',
+          backgroundSize: "20px 20px",
           opacity: 0.1,
           zIndex: 0,
         }}
       />
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={4} alignItems="center" sx={{ minHeight: '100vh', py: 8 }}>
+      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+        <Grid
+          container
+          spacing={4}
+          alignItems="center"
+          sx={{ minHeight: "100vh", py: 8 }}
+        >
           <Grid item xs={12} md={6}>
             <Typography
               component="h1"
@@ -90,26 +104,31 @@ const Home = () => {
             >
               RepWeDo
             </Typography>
-            <Typography variant="h4" color="text.secondary" paragraph sx={{ mb: 4 }}>
+            <Typography
+              variant="h4"
+              color="text.secondary"
+              paragraph
+              sx={{ mb: 4 }}
+            >
               Service at your doorstep
             </Typography>
-            <Button 
-              variant="contained" 
-              color="primary" 
-              component={Link} 
-              to="/booking" 
-              size="large" 
-              sx={{ 
-                mt: 2, 
-                borderRadius: '50px', 
-                padding: '15px 40px',
-                fontWeight: 'bold',
-                fontSize: '1.2rem',
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to="/booking"
+              size="large"
+              sx={{
+                mt: 2,
+                borderRadius: "50px",
+                padding: "15px 40px",
+                fontWeight: "bold",
+                fontSize: "1.2rem",
                 backgroundColor: theme.palette.info.main,
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: theme.palette.info.dark,
-                  transform: 'scale(1.05)',
-                  transition: 'all 0.3s ease-in-out',
+                  transform: "scale(1.05)",
+                  transition: "all 0.3s ease-in-out",
                 },
               }}
             >
@@ -119,11 +138,11 @@ const Home = () => {
           <Grid item xs={12} md={6}>
             <Box
               sx={{
-                position: 'relative',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                position: "relative",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Box
@@ -131,12 +150,12 @@ const Home = () => {
                 src={bgImage}
                 alt="RepWeDo service illustration"
                 sx={{
-                  width: '100%',
+                  width: "100%",
                   maxWidth: 500,
-                  height: 'auto',
+                  height: "auto",
                   animation: `${float} 6s ease-in-out infinite`,
-                  position: 'relative',
-                  top: '-10%',
+                  position: "relative",
+                  top: "-10%",
                 }}
               />
               <Box
@@ -144,9 +163,9 @@ const Home = () => {
                 viewBox="0 0 24 24"
                 sx={{
                   width: 60,
-                  position: 'absolute',
-                  top: '5%',
-                  left: '10%',
+                  position: "absolute",
+                  top: "5%",
+                  left: "10%",
                   fill: theme.palette.info.main,
                   animation: `${float} 4s ease-in-out infinite`,
                 }}
@@ -158,9 +177,9 @@ const Home = () => {
                 viewBox="0 0 24 24"
                 sx={{
                   width: 50,
-                  position: 'absolute',
-                  top: '20%',
-                  right: '5%',
+                  position: "absolute",
+                  top: "20%",
+                  right: "5%",
                   fill: theme.palette.secondary.main,
                   animation: `${float} 5s ease-in-out infinite`,
                 }}
@@ -172,9 +191,9 @@ const Home = () => {
                 viewBox="0 0 24 24"
                 sx={{
                   width: 40,
-                  position: 'absolute',
-                  bottom: '10%',
-                  right: '10%',
+                  position: "absolute",
+                  bottom: "10%",
+                  right: "10%",
                   fill: theme.palette.success.main,
                   animation: `${float} 6s ease-in-out infinite`,
                 }}
@@ -186,50 +205,57 @@ const Home = () => {
         </Grid>
       </Container>
 
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ py: 8, position: "relative", zIndex: 1 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Box
               sx={{
-                textAlign: 'center',
+                textAlign: "center",
                 p: 4,
                 border: `1px solid ${theme.palette.divider}`,
-                borderRadius: '12px',
+                borderRadius: "12px",
                 backgroundColor: theme.palette.background.paper,
                 boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
+                transition:
+                  "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-10px)",
                   boxShadow: 6,
                 },
               }}
             >
-              <CheckCircle sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+              <CheckCircle
+                sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }}
+              />
               <Typography variant="h5" color="text.primary">
                 Quality Assurance
               </Typography>
               <Typography color="text.secondary">
-                We ensure top-quality service with a focus on customer satisfaction.
+                We ensure top-quality service with a focus on customer
+                satisfaction.
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={4}>
             <Box
               sx={{
-                textAlign: 'center',
+                textAlign: "center",
                 p: 4,
                 border: `1px solid ${theme.palette.divider}`,
-                borderRadius: '12px',
+                borderRadius: "12px",
                 backgroundColor: theme.palette.background.paper,
                 boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
+                transition:
+                  "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-10px)",
                   boxShadow: 6,
                 },
               }}
             >
-              <Speed sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+              <Speed
+                sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }}
+              />
               <Typography variant="h5" color="text.primary">
                 Fast Service
               </Typography>
@@ -241,20 +267,23 @@ const Home = () => {
           <Grid item xs={12} md={4}>
             <Box
               sx={{
-                textAlign: 'center',
+                textAlign: "center",
                 p: 4,
                 border: `1px solid ${theme.palette.divider}`,
-                borderRadius: '12px',
+                borderRadius: "12px",
                 backgroundColor: theme.palette.background.paper,
                 boxShadow: 3,
-                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
+                transition:
+                  "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-10px)",
                   boxShadow: 6,
                 },
               }}
             >
-              <AttachMoney sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
+              <AttachMoney
+                sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }}
+              />
               <Typography variant="h5" color="text.primary">
                 Affordable Pricing
               </Typography>
@@ -266,7 +295,7 @@ const Home = () => {
         </Grid>
       </Container>
 
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ py: 8, position: "relative", zIndex: 1 }}>
         <Typography variant="h3" color="text.primary" gutterBottom>
           Customer Reviews
         </Typography>
@@ -278,34 +307,46 @@ const Home = () => {
                 p: 3,
                 mb: 2,
                 border: `1px solid ${theme.palette.divider}`,
-                borderRadius: '8px',
+                borderRadius: "8px",
                 backgroundColor: theme.palette.background.paper,
-                boxShadow: 2,
+                boxShadow: 3,
+                transition:
+                  "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 6,
+                },
               }}
             >
               <Typography variant="h6" color="text.primary" gutterBottom>
                 {review.author}
               </Typography>
-              <Typography color="text.secondary">
-                {review.text}
-              </Typography>
+              <Typography color="text.secondary">{review.text}</Typography>
             </Box>
           ))
         ) : (
-          <Typography color="text.secondary">
-            No reviews available.
-          </Typography>
+          <Typography color="text.secondary">No reviews available.</Typography>
         )}
       </Container>
 
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ py: 8, position: "relative", zIndex: 1 }}>
         <Typography variant="h4" color="text.primary" gutterBottom>
           Leave a Review
         </Typography>
         <Box
           component="form"
           onSubmit={handleSubmitReview}
-          sx={{ maxWidth: '600px', margin: 'auto' }}
+          sx={{
+            maxWidth: "600px",
+            margin: "auto",
+            backgroundColor: theme.palette.background.paper,
+            p: 4,
+            borderRadius: "12px",
+            boxShadow: 3,
+            "&:hover": {
+              boxShadow: 6,
+            },
+          }}
         >
           <TextField
             fullWidth
@@ -315,6 +356,7 @@ const Home = () => {
             value={reviewAuthor}
             onChange={(e) => setReviewAuthor(e.target.value)}
             required
+            sx={{ mb: 2 }}
           />
           <TextField
             fullWidth
@@ -326,18 +368,22 @@ const Home = () => {
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             required
+            sx={{ mb: 2 }}
           />
-          <Button 
-            type="submit" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
             size="large"
             sx={{ mt: 2 }}
           >
             Submit Review
           </Button>
           {submissionStatus && (
-            <Typography color={submissionStatus.includes('Failed') ? 'error' : 'success'} sx={{ mt: 2 }}>
+            <Typography
+              color={submissionStatus.includes("Failed") ? "error" : "success"}
+              sx={{ mt: 2 }}
+            >
               {submissionStatus}
             </Typography>
           )}
